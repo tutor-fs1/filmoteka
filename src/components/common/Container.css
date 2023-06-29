@@ -1,0 +1,26 @@
+.outer-section {
+  background-color: pink;
+}
+
+.inner-section {
+  background-color: aquamarine;
+  margin: 0 auto;
+}
+
+@media screen and (min-width: 480px) {
+  .inner-section {
+    max-width: 480px;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .inner-section {
+    max-width: 768px;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .inner-section {
+    max-width: 1200px;
+  }
+}
