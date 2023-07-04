@@ -1,22 +1,49 @@
+import { Component } from "react";
 import "./App.css";
 import { Container } from "./common/Container";
+import { Modal } from "./common/Modal";
 import { Header } from "./header/Header";
 import { Main } from "./main/Main";
 
-function App() {
-  return (
-    <>
-      <Container>
-        <Header />
-      </Container>
-      <Container>
-        <Main isLoading={true} />
-        <Main hasError={true} />
-        <Main data={data} />
-      </Container>
-      <Container solidColor="#dedede">footer</Container>
-    </>
-  );
+class App extends Component {
+  state = {
+    modalIsVisible: false,
+    selectedMovie: false,
+  };
+  constructor() {
+    super();
+  }
+  openModal(id) {
+    this.setState({
+      modalIsVisible: true,
+      selectedMovie: id,
+    });
+  }
+  closeModal() {
+    this.setState({
+      modalIsVisible: false,
+      selectedMovie: false,
+    });
+  }
+  render() {
+    return (
+      <>
+        {this.state.modalIsVisible && (
+          <Modal
+            closeModal={this.closeModal.bind(this)}
+            id={this.state.selectedMovie}
+          />
+        )}
+        <Container>
+          <Header />
+        </Container>
+        <Container>
+          <Main openModal={this.openModal.bind(this)} />
+        </Container>
+        <Container solidColor="#dedede">footer</Container>
+      </>
+    );
+  }
 }
 
 const data = {
