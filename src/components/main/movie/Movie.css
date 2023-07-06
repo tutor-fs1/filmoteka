@@ -1,9 +1,7 @@
 .movie-item {
+  display: flex;
+  flex-direction: column;
   flex: 1 0 300px;
   border: 1px solid red;
-}
-
-.movie-item > img {
-  width: 100%;
-  display: block;
+  align-items: center;
 }
