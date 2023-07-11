@@ -64,14 +64,15 @@ class App extends Component {
   render() {
     return (
       <>
-        {this.state.modalIsVisible && (
-          <Modal
-            closeModal={this.closeModal.bind(this)}
-            id={this.state.selectedMovie}
-          />
-        )}
+        <Modal
+          modalIsVisible={this.state.modalIsVisible}
+          closeModal={this.closeModal.bind(this)}
+          id={this.state.selectedMovie}
+        />
+
         <Container>
           <Header
+            totalPages={this.state.data ? this.state.data.totalPages : null}
             searchTerm={this.state.searchTerm}
             handleChange={this.handleChange}
           />
@@ -91,7 +92,7 @@ class App extends Component {
   }
   state = {
     modalIsVisible: false,
-    selectedMovie: false,
+    selectedMovie: null,
     isLoading: true,
     hasError: false,
     data: false,
@@ -110,7 +111,7 @@ class App extends Component {
   closeModal() {
     this.setState({
       modalIsVisible: false,
-      selectedMovie: false,
+      selectedMovie: null,
     });
   }
 }

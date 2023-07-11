@@ -12,7 +12,11 @@ export class Main extends Component {
         {this.props.hasError && <h2>Eroare la incarcarea filmelor</h2>}
         {this.props.data &&
           this.props.data.results.map(film => (
-            <Movie movie={film} openModal={this.props.openModal} />
+            <Movie
+              key={film.id}
+              movie={film}
+              openModal={this.props.openModal}
+            />
           ))}
       </main>
     );
