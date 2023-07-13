@@ -1,0 +1,19 @@
+.pagination-container {
+  display: flex;
+  width: 100%;
+  border: 1px solid red;
+  padding: 5px;
+  gap: 5px;
+}
+
+.page-number {
+  border: 1px solid blue;
+  padding: 4px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.current-page {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

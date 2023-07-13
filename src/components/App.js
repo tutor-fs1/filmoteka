@@ -6,25 +6,28 @@ import { Header } from "./header/Header";
 import { Main } from "./main/Main";
 
 class App extends Component {
-  fetchInitialData() {
+  fetchData() {
     fetch(
-      `https://api.themoviedb.org/3/trending/movie/day?page=1&api_key=8b218b85545392c9f8705c30fbfd1bce`
+      `https://api.themoviedb.org/3/trending/movie/day?page=${this.state.currentPage}&api_key=8b218b85545392c9f8705c30fbfd1bce`
     )
       .then(response => {
         return response.json();
       })
       .then(data => {
         this.setState({
-          isLoading: false,
           hasError: false,
           data: data,
         });
       })
       .catch(err => {
         this.setState({
-          isLoading: false,
           hasError: true,
           data: false,
+        });
+      })
+      .finally(() => {
+        this.setState({
+          isLoading: false,
         });
       });
   }
@@ -56,11 +59,22 @@ class App extends Component {
       searchTerm: searchTerm,
     });
     if (!searchTerm.length) {
-      this.fetchInitialData();
+      this.fetchData();
     } else {
       this.fetchSearchData(searchTerm);
     }
   };
+  navigateToPage(page) {
+    console.log("s-a chemat navigateToPage");
+    this.setState({
+      currentPage: page,
+    });
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.currentPage !== prevState.currentPage) {
+      this.fetchData();
+    }
+  }
   render() {
     return (
       <>
@@ -79,11 +93,13 @@ class App extends Component {
         </Container>
         <Container>
           <Main
+            navigateToPage={this.navigateToPage.bind(this)}
             searchTerm={this.state.searchTerm}
             data={this.state.data}
             hasError={this.state.hasError}
             isLoading={this.state.isLoading}
             openModal={this.openModal.bind(this)}
+            currentPage={this.state.currentPage}
           />
         </Container>
         <Container solidColor="#dedede">footer</Container>
@@ -97,10 +113,11 @@ class App extends Component {
     hasError: false,
     data: false,
     searchTerm: "",
+    currentPage: 1,
   };
   constructor() {
     super();
-    this.fetchInitialData();
+    this.fetchData();
   }
   openModal(id) {
     this.setState({

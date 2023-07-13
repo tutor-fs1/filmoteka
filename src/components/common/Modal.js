@@ -6,7 +6,6 @@ export class Modal extends Component {
     data: null,
   };
   componentDidUpdate(prevProps, prevState, snapshot) {
-    console.log("component is rerendering");
     if (this.props.id !== null && prevProps.id !== this.props.id) {
       fetch(
         `https://api.themoviedb.org/3/movie/${this.props.id}?api_key=8b218b85545392c9f8705c30fbfd1bce`

@@ -1,6 +1,7 @@
 import { Component } from "react";
 import "./Main.css";
 import { Movie } from "./movie/Movie";
+import { Pagination } from "./pagination/Pagination";
 export class Main extends Component {
   constructor() {
     super();
@@ -8,6 +9,13 @@ export class Main extends Component {
   render() {
     return (
       <main>
+        {!this.props.isLoading && !this.props.hasError && (
+          <Pagination
+            currentPage={this.props.currentPage}
+            totalPages={this.props.data.total_pages}
+            navigateToPage={this.props.navigateToPage}
+          />
+        )}
         {this.props.isLoading && <h2>Se incarca filmele</h2>}
         {this.props.hasError && <h2>Eroare la incarcarea filmelor</h2>}
         {this.props.data &&
