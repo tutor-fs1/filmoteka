@@ -1,11 +1,33 @@
 import { Navigation } from "./navigation/Navigation";
 import { SearchForm } from "./search-form/SearchForm";
 import "./Header.css";
-import { LiveSearch } from "../common/exemple/LiveSearch";
-import { Component } from "react";
+import { Component, useState } from "react";
 import { RandomMovie } from "./random-movie/RandomMovie";
 
-export class Header extends Component {
+
+export const Header = ({searchTerm, handleChange, totalPages}) => {
+  const [showRandom, setShowRandom] = useState(false);
+  // showRandom = false        la prima randare
+  // showRandom = va fii valoare pusa cel mai recent de functia setShowState()
+  const toggleShowRandom = () => {
+    setShowRandom(!showRandom);
+  }
+
+  return <header className="header">
+    <SearchForm
+      searchTerm={searchTerm}
+      handleChange={handleChange}
+    />
+    <Navigation />
+    <h1>filmoteka</h1>
+    <button onClick={toggleShowRandom}>Afiseaza film random</button>
+    {showRandom && (
+      <RandomMovie totalPages={totalPages} />
+    )}
+  </header>
+}
+
+export class HeaderClass extends Component {
   state = {
     showRandom: false,
   };

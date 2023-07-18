@@ -1,23 +1,81 @@
-import { Component } from "react";
+import { Component, useState, useEffect } from "react";
 import "./Modal.css";
+import { fetchMovie } from "../../utils/requests/movies";
 
-export class Modal extends Component {
+export const Modal = ({modalIsVisible, closeModal, id}) => {
+  const [data, setData] = useState(null);
+
+
+  const functieCareSeApeleazaCandSeSchimbaListaDeDependente = () => {
+    if(id !== null) {
+      fetchMovie(id).then(movieData => {
+        setData(movieData)
+      }).catch(e => console.log(e));
+    } else {
+      setData(null);
+    }
+  }
+
+  const listaDeDependente = [id];
+  // inlocuit metoda componentDidUpdate
+  // de fiecare data cand se schimba una din variabilele din lista de proprietati va rula functia callback
+  useEffect(functieCareSeApeleazaCandSeSchimbaListaDeDependente, listaDeDependente);
+
+  const functieCareRuleazaDoarCandSeRandeazaPrimaOara = () => {
+    console.log('S-a randat componenta prima oara');
+  }
+
+  useEffect(functieCareRuleazaDoarCandSeRandeazaPrimaOara, []);
+
+  return (
+    <div id="info-modal" className="modal-wrapper" style={{
+      display: modalIsVisible ? "flex" : "none",
+    }}>
+      <div id="modal">
+        <div
+          id="close-modal"
+          className="backdrop"
+          onClick={closeModal}
+        >
+          X
+        </div>
+        <div id="movie-card">
+          {data && (
+            <div>
+              <h2>{data.title}</h2>
+              {data.genres.map(genre => {
+                return (
+                  <span
+                    key={genre.id}
+                    style={{
+                      border: "1px solid black",
+                      borderRadius: "5px",
+                      margin: "5px",
+                    }}
+                  >
+                    {genre.name}
+                  </span>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+
+
+}
+// nu mai e folosit
+export class ModalClass extends Component {
   state = {
     data: null,
-  };
+  }
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (this.props.id !== null && prevProps.id !== this.props.id) {
-      fetch(
-        `https://api.themoviedb.org/3/movie/${this.props.id}?api_key=8b218b85545392c9f8705c30fbfd1bce`
-      )
-        .then(res => res.json())
-        .then(data => {
-          console.log(data);
-          this.setState({
-            data: data,
-          });
-        })
-        .catch(e => console.log(e));
+      fetchMovie(this.props.id).then(data => {
+        this.setState({ data: data });
+      }).catch(e => console.log(e));
     }
     // https://api.themoviedb.org/3/movie/430?api_key=${key
     // daca s-a schimbat id-ul
